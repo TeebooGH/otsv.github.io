@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OTSV - Dashboard Qualité des Sols</title>
+    
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <h1 class="header__title">🌱 <span>OTSV</span> Dashboard</h1>
+        <div class="header__controls">
+            <nav style="display: flex; gap: 0.5rem;">
+                <a href="dashboard-sol.html" class="nav-link active" style="background: var(--bg-card); padding: 0.5rem 1rem; border-radius: 0.5rem; color: var(--text-secondary); text-decoration: none; font-size: 0.875rem; border: 1px solid var(--border);">📊 Dashboard</a>
+                <a href="sources.html" class="nav-link" style="background: var(--bg-card); padding: 0.5rem 1rem; border-radius: 0.5rem; color: var(--text-secondary); text-decoration: none; font-size: 0.875rem; border: 1px solid var(--border);">📚 Sources</a>
+            </nav>
+            <div class="filter-group">
+                <button class="filter-btn active" data-filter="all">Tous</button>
+                <button class="filter-btn" data-filter="parc">Parcs</button>
+                <button class="filter-btn" data-filter="jardin">Jardins</button>
+                <button class="filter-btn" data-filter="agriculture">Agriculture</button>
+                <button class="filter-btn" data-filter="bois">Bois</button>
+                <button class="filter-btn" data-filter="berge">Berges</button>
+            </div>
+            <div class="location-badge">Évry-Courcouronnes, Essonne (91)</div>
+        </div>
+    </header>
+
+    <!-- Main Dashboard -->
+    <main class="dashboard">
+        <!-- Left Panel: Map + Indicators -->
+        <div class="left-panel">
+            <!-- Map -->
+            <div class="map-container">
+                <div id="map"></div>
+                <div class="map-legend">
+                    <div class="map-legend__title">Score Santé</div>
+                    <div class="map-legend__items" id="map-legend-items"></div>
+                </div>
+            </div>
+
+            <!-- Indicators Grid -->
+            <div class="indicators-grid" id="indicators-grid">
+                <!-- Dynamically populated -->
+            </div>
+        </div>
+
+        <!-- Right Panel: Stats + Zones + Nutrients -->
+        <div class="right-panel">
+            <!-- Global Statistics -->
+            <div class="panel-card">
+                <div class="panel-card__title">📊 Statistiques Globales</div>
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-item__value" id="stat-score">--</div>
+                        <div class="stat-item__label">Score Santé Sol</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-item__value" id="stat-zones">--</div>
+                        <div class="stat-item__label">Zones Analysées</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-item__value" id="stat-samples">--</div>
+                        <div class="stat-item__label">Échantillons</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-item__value" id="stat-excellent">--</div>
+                        <div class="stat-item__label">Zones Excellentes</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Zones List -->
+            <div class="panel-card">
+                <div class="panel-card__title">📍 Zones de Mesure</div>
+                <div class="zones-list" id="zones-list">
+                    <!-- Dynamically populated -->
+                </div>
+            </div>
+
+            <!-- Nutrients -->
+            <div class="panel-card">
+                <div class="panel-card__title">🧬 Nutriments (mg/kg)</div>
+                <div class="nutrient-bars" id="nutrients-bars">
+                    <!-- Dynamically populated -->
+                </div>
+            </div>
+
+            <!-- Type Distribution -->
+            <div class="panel-card">
+                <div class="panel-card__title">🗂️ Répartition par Type</div>
+                <div class="type-distribution" id="type-distribution">
+                    <!-- Dynamically populated -->
+                </div>
+            </div>
+
+            <!-- Last Update -->
+            <div class="last-update" id="last-update">
+                Chargement...
+            </div>
+        </div>
+    </main>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="data/zones.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/map.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OTSV - Sources & Méthodologie</title>
+
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="css/styles.css" />
+    <style>
+        .sources-page {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: var(--space-xl);
+        }
+
+        .page-intro {
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            padding: var(--space-xl);
+            border: 1px solid var(--border);
+            margin-bottom: var(--space-xl);
+        }
+
+        .page-intro__role {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-sm);
+            background: var(--accent-dim);
+            color: var(--accent);
+            padding: var(--space-sm) var(--space-md);
+            border-radius: var(--radius-full);
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: var(--space-md);
+        }
+
+        .page-intro__title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: var(--space-md);
+        }
+
+        .page-intro__description {
+            color: var(--text-secondary);
+            line-height: 1.7;
+            max-width: 800px;
+        }
+
+        .section {
+            margin-bottom: var(--space-xl);
+        }
+
+        .section__title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: var(--space-lg);
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            padding-bottom: var(--space-sm);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .sources-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: var(--space-lg);
+        }
+
+        .source-card {
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            padding: var(--space-lg);
+            border: 1px solid var(--border);
+            transition: all var(--transition-normal);
+        }
+
+        .source-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        .source-card__category {
+            display: inline-block;
+            font-size: 0.65rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: var(--space-xs) var(--space-sm);
+            border-radius: var(--radius-sm);
+            margin-bottom: var(--space-md);
+        }
+
+        .category--official {
+            background: rgba(59, 130, 246, 0.2);
+            color: #60a5fa;
+        }
+
+        .category--scientific {
+            background: rgba(139, 92, 246, 0.2);
+            color: #a78bfa;
+        }
+
+        .category--technical {
+            background: rgba(34, 197, 94, 0.2);
+            color: #4ade80;
+        }
+
+        .category--local {
+            background: rgba(245, 158, 11, 0.2);
+            color: #fbbf24;
+        }
+
+        .source-card__title {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: var(--space-sm);
+        }
+
+        .source-card__org {
+            font-size: 0.8rem;
+            color: var(--accent);
+            margin-bottom: var(--space-md);
+        }
+
+        .source-card__description {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: var(--space-md);
+        }
+
+        .source-card__meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--space-sm);
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .source-card__meta span {
+            display: flex;
+            align-items: center;
+            gap: var(--space-xs);
+        }
+
+        .source-card__link {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-xs);
+            margin-top: var(--space-md);
+            padding: var(--space-sm) var(--space-md);
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            text-decoration: none;
+            border-radius: var(--radius-sm);
+            font-size: 0.8rem;
+            transition: all var(--transition-fast);
+        }
+
+        .source-card__link:hover {
+            background: var(--accent);
+            color: var(--bg-primary);
+        }
+
+        .methodology-list {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-md);
+        }
+
+        .methodology-item {
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            padding: var(--space-lg);
+            border: 1px solid var(--border);
+            display: grid;
+            grid-template-columns: 60px 1fr;
+            gap: var(--space-lg);
+            align-items: start;
+        }
+
+        .methodology-item__number {
+            width: 48px;
+            height: 48px;
+            background: var(--accent-dim);
+            color: var(--accent);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+
+        .methodology-item__title {
+            font-weight: 600;
+            margin-bottom: var(--space-sm);
+        }
+
+        .methodology-item__description {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .indicators-reference {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: var(--space-md);
+        }
+
+        .indicator-ref {
+            background: var(--bg-card);
+            border-radius: var(--radius-md);
+            padding: var(--space-lg);
+            border: 1px solid var(--border);
+        }
+
+        .indicator-ref__header {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            margin-bottom: var(--space-md);
+        }
+
+        .indicator-ref__icon {
+            font-size: 1.5rem;
+        }
+
+        .indicator-ref__name {
+            font-weight: 600;
+        }
+
+        .indicator-ref__range {
+            background: var(--bg-secondary);
+            border-radius: var(--radius-sm);
+            padding: var(--space-md);
+            margin-bottom: var(--space-md);
+        }
+
+        .indicator-ref__range-title {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            margin-bottom: var(--space-sm);
+        }
+
+        .indicator-ref__range-value {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--accent);
+        }
+
+        .indicator-ref__source {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-sm);
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.875rem;
+            transition: color var(--transition-fast);
+        }
+
+        .back-link:hover {
+            color: var(--accent);
+        }
+
+        .nav-link {
+            background: var(--bg-card);
+            padding: var(--space-sm) var(--space-md);
+            border-radius: var(--radius-sm);
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.875rem;
+            border: 1px solid var(--border);
+            transition: all var(--transition-fast);
+        }
+
+        .nav-link:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .nav-link.active {
+            background: var(--accent);
+            color: var(--bg-primary);
+            border-color: var(--accent);
+        }
+
+        @media (max-width: 768px) {
+            .sources-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .methodology-item {
+                grid-template-columns: 1fr;
+            }
+
+            .methodology-item__number {
+                margin-bottom: var(--space-sm);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header">
+        <h1 class="header__title">🌱 <span>OTSV</span> Dashboard</h1>
+        <div class="header__controls">
+            <nav style="display: flex; gap: var(--space-sm);">
+                <a href="dashboard-sol.html" class="nav-link">📊 Dashboard</a>
+                <a href="sources.html" class="nav-link active">📚 Sources</a>
+            </nav>
+            <div class="location-badge">Évry-Courcouronnes, Essonne (91)</div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="sources-page">
+        <!-- Introduction -->
+        <div class="page-intro">
+            <div class="page-intro__role">🔍 Pôle Investigation</div>
+            <h2 class="page-intro__title">Sources & Méthodologie</h2>
+            <p class="page-intro__description">
+                En tant que garant de la qualité des informations partagées sur la thématique de la qualité des sols
+                sur le territoire d'Évry-Courcouronnes, cette page présente l'ensemble des sources scientifiques,
+                institutionnelles et techniques qui appuient les données du dashboard. Chaque indicateur est
+                documenté avec ses références et ses valeurs de référence.
+            </p>
+        </div>
+
+        <!-- Sources Officielles -->
+        <section class="section">
+            <h3 class="section__title">📋 Sources Institutionnelles</h3>
+            <div class="sources-grid">
+                <div class="source-card">
+                    <span class="source-card__category category--official">Officiel</span>
+                    <h4 class="source-card__title">GIS Sol - Groupement d'Intérêt Scientifique Sol</h4>
+                    <p class="source-card__org">INRAE / Ministère de l'Agriculture</p>
+                    <p class="source-card__description">
+                        Programme national de surveillance des sols en France. Fournit les données de référence
+                        pour le Réseau de Mesures de la Qualité des Sols (RMQS) et les indicateurs pédologiques.
+                    </p>
+                    <div class="source-card__meta">
+                        <span>📅 Mise à jour : 2024</span>
+                        <span>🗺️ Couverture nationale</span>
+                    </div>
+                    <a href="https://www.gissol.fr/" target="_blank" class="source-card__link">
+                        Consulter →
+                    </a>
+                </div>
+
+                <div class="source-card">
+                    <span class="source-card__category category--official">Officiel</span>
+                    <h4 class="source-card__title">BRGM - InfoTerre</h4>
+                    <p class="source-card__org">Bureau de Recherches Géologiques et Minières</p>
+                    <p class="source-card__description">
+                        Base de données géologiques nationale incluant les cartes pédologiques,
+                        les analyses de sols et les données sur la qualité des eaux souterraines.
+                    </p>
+                    <div class="source-card__meta">
+                        <span>📅 Données continues</span>
+                        <span>🗺️ Île-de-France</span>
+                    </div>
+                    <a href="https://infoterre.brgm.fr/" target="_blank" class="source-card__link">
+                        Consulter →
+                    </a>
+                </div>
+
+                <div class="source-card">
+                    <span class="source-card__category category--official">Officiel</span>
+                    <h4 class="source-card__title">ADEME - Agence de la Transition Écologique</h4>
+                    <p class="source-card__org">Ministère de la Transition Écologique</p>
+                    <p class="source-card__description">
+                        Guides techniques sur la gestion durable des sols, indicateurs de qualité
+                        et méthodologies d'évaluation de la santé des sols urbains et agricoles.
+                    </p>
+                    <div class="source-card__meta">
+                        <span>📅 2023</span>
+                        <span>📄 Guides & Rapports</span>
+                    </div>
+                    <a href="https://www.ademe.fr/" target="_blank" class="source-card__link">
+                        Consulter →
+                    </a>
+                </div>
+
+                <div class="source-card">
+                    <span class="source-card__category category--local">Local</span>
+                    <h4 class="source-card__title">Grand Paris Sud - Données Environnementales</h4>
+                    <p class="source-card__org">Communauté d'Agglomération</p>
+                    <p class="source-card__description">
+                        Données locales sur les espaces verts, jardins partagés et zones naturelles
+                        du territoire d'Évry-Courcouronnes et de l'agglomération Grand Paris Sud.
+                    </p>
+                    <div class="source-card__meta">
+                        <span>📅 2024</span>
+                        <span>🗺️ Évry-Courcouronnes</span>
+                    </div>
+                    <a href="https://www.grandparissud.fr/" target="_blank" class="source-card__link">
+                        Consulter →
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sources Scientifiques -->
+        <section class="section">
+            <h3 class="section__title">🔬 Sources Scientifiques</h3>
+            <div class="sources-grid">
+                <div class="source-card">
+                    <span class="source-card__category category--scientific">Scientifique</span>
+                    <h4 class="source-card__title">INRAE - Institut National de Recherche pour l'Agriculture</h4>
+                    <p class="source-card__org">Recherche publique française</p>
+                    <p class="source-card__description">
+                        Recherches fondamentales sur la biologie des sols, les cycles biogéochimiques
+                        (carbone, azote), et les interactions sol-plante-microorganismes.
+                    </p>
+                    <div class="source-card__meta">
+                        <span>📄 Publications peer-reviewed</span>
+                    </div>
+                    <a href="https://www.inrae.fr/" target="_blank" class="source-card__link">
+                        Consulter →
+                    </a>
+                </div>
+
+                <div class="source-card">
+                    <span class="source-card__category category--scientific">Scientifique</span>
+                    <h4 class="source-card__title">FAO - Organisation des Nations Unies pour l'Alimentation</h4>
+                    <p class="source-card__org">Nations Unies</p>
+                    <p class="source-card__description">
+                        Directives internationales sur l'évaluation de la dégradation des sols,
+                        les indicateurs de fertilité et les valeurs de référence mondiales.
+                    </p>
+                    <div class="source-card__meta">
+                        <span>📅 2020-2024</span>
+                        <span>🌍 International</span>
+                    </div>
+                    <a href="https://www.fao.org/soils-portal/fr/" target="_blank" class="source-card__link">
+                        Consulter →
+                    </a>
+                </div>
+
+                <div class="source-card">
+                    <span class="source-card__category category--scientific">Scientifique</span>
+                    <h4 class="source-card__title">European Soil Data Centre (ESDAC)</h4>
+                    <p class="source-card__org">Commission Européenne - JRC</p>
+                    <p class="source-card__description">
+                        Centre de référence européen pour les données sur les sols. Fournit les
+                        standards et indicateurs harmonisés à l'échelle de l'Union Européenne.
+                    </p>
+                    <div class="source-card__meta">
+                        <span>📅 2024</span>
+                        <span>🇪🇺 Europe</span>
+                    </div>
+                    <a href="https://esdac.jrc.ec.europa.eu/" target="_blank" class="source-card__link">
+                        Consulter →
+                    </a>
+                </div>
+
+                <div class="source-card">
+                    <span class="source-card__category category--technical">Technique</span>
+                    <h4 class="source-card__title">Normes ISO 10390 & ISO 11265</h4>
+                    <p class="source-card__org">Organisation Internationale de Normalisation</p>
+                    <p class="source-card__description">
+                        Normes internationales pour la mesure du pH des sols (ISO 10390) et
+                        de la conductivité électrique (ISO 11265). Protocoles de référence.
+                    </p>
+                    <div class="source-card__meta">
+                        <span>📄 Normes techniques</span>
+                    </div>
+                    <a href="https://www.iso.org/" target="_blank" class="source-card__link">
+                        Consulter →
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Méthodologie -->
+        <section class="section">
+            <h3 class="section__title">⚙️ Méthodologie de Collecte</h3>
+            
+            <!-- Distinction Sonde/Labo -->
+            <div style="background: var(--bg-card); border-radius: var(--radius-lg); padding: var(--space-xl); border: 1px solid var(--border); margin-bottom: var(--space-xl);">
+                <h4 style="font-size: 1rem; margin-bottom: var(--space-lg); color: var(--text-primary);">📡 Distinction Sonde / Laboratoire</h4>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-xl);">
+                    <!-- Sonde -->
+                    <div style="background: rgba(74, 222, 128, 0.08); border: 1px solid rgba(74, 222, 128, 0.3); border-radius: var(--radius-md); padding: var(--space-lg);">
+                        <div style="display: flex; align-items: center; gap: var(--space-sm); margin-bottom: var(--space-md);">
+                            <span style="background: rgba(74, 222, 128, 0.2); color: #4ade80; padding: 0.25rem 0.75rem; border-radius: var(--radius-full); font-size: 0.7rem; font-weight: 600; text-transform: uppercase;">📡 Sonde - Temps réel</span>
+                        </div>
+                        <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: var(--space-md); line-height: 1.6;">
+                            Indicateurs mesurables directement sur le terrain avec notre sonde multi-paramètres, sans nécessiter d'analyse en laboratoire.
+                        </p>
+                        <ul style="list-style: none; padding: 0; margin: 0; font-size: 0.85rem;">
+                            <li style="padding: 0.5rem 0; border-bottom: 1px solid rgba(74, 222, 128, 0.15); display: flex; align-items: center; gap: 0.5rem;">
+                                <span>💦</span> <strong>Hygrométrie</strong> — Humidité du sol
+                            </li>
+                            <li style="padding: 0.5rem 0; border-bottom: 1px solid rgba(74, 222, 128, 0.15); display: flex; align-items: center; gap: 0.5rem;">
+                                <span>🌡️</span> <strong>Température</strong> — Chaleur du sol
+                            </li>
+                            <li style="padding: 0.5rem 0; border-bottom: 1px solid rgba(74, 222, 128, 0.15); display: flex; align-items: center; gap: 0.5rem;">
+                                <span>💧</span> <strong>pH</strong> — Acidité du sol
+                            </li>
+                            <li style="padding: 0.5rem 0; border-bottom: 1px solid rgba(74, 222, 128, 0.15); display: flex; align-items: center; gap: 0.5rem;">
+                                <span>⚡</span> <strong>Conductivité</strong> — Conductivité électrique
+                            </li>
+                            <li style="padding: 0.5rem 0; display: flex; align-items: center; gap: 0.5rem;">
+                                <span>🌿</span> <strong>NPK</strong> — Azote, Phosphore, Potassium
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <!-- Laboratoire -->
+                    <div style="background: rgba(139, 92, 246, 0.08); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: var(--radius-md); padding: var(--space-lg);">
+                        <div style="display: flex; align-items: center; gap: var(--space-sm); margin-bottom: var(--space-md);">
+                            <span style="background: rgba(139, 92, 246, 0.2); color: #a78bfa; padding: 0.25rem 0.75rem; border-radius: var(--radius-full); font-size: 0.7rem; font-weight: 600; text-transform: uppercase;">🔬 Laboratoire</span>
+                        </div>
+                        <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: var(--space-md); line-height: 1.6;">
+                            Indicateurs de structure physique et capital à long terme du sol, nécessitant une analyse en laboratoire accrédité.
+                        </p>
+                        <ul style="list-style: none; padding: 0; margin: 0; font-size: 0.85rem;">
+                            <li style="padding: 0.5rem 0; border-bottom: 1px solid rgba(139, 92, 246, 0.15); display: flex; align-items: center; gap: 0.5rem;">
+                                <span>🍂</span> <strong>Matière Organique</strong> — Taux de MO
+                            </li>
+                            <li style="padding: 0.5rem 0; border-bottom: 1px solid rgba(139, 92, 246, 0.15); display: flex; align-items: center; gap: 0.5rem;">
+                                <span>⚖️</span> <strong>Rapport C/N</strong> — Carbone/Azote
+                            </li>
+                            <li style="padding: 0.5rem 0; border-bottom: 1px solid rgba(139, 92, 246, 0.15); display: flex; align-items: center; gap: 0.5rem;">
+                                <span>🧪</span> <strong>CEC</strong> — Capacité d'Échange Cationique
+                            </li>
+                            <li style="padding: 0.5rem 0; display: flex; align-items: center; gap: 0.5rem;">
+                                <span>🔬</span> <strong>ETN</strong> — Éléments Traces Naturels
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="methodology-list">
+                <div class="methodology-item">
+                    <div class="methodology-item__number">1</div>
+                    <div>
+                        <h4 class="methodology-item__title">Identification des Zones de Mesure</h4>
+                        <p class="methodology-item__description">
+                            Les 35 points de mesure sont répartis sur l'ensemble du territoire d'Évry-Courcouronnes,
+                            couvrant les différents types d'espaces : parcs urbains, jardins familiaux, berges de Seine,
+                            espaces boisés, zones agricoles et friches en reconversion. Le maillage garantit une
+                            représentativité géographique et typologique du territoire.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="methodology-item">
+                    <div class="methodology-item__number">2</div>
+                    <div>
+                        <h4 class="methodology-item__title">Mesures Terrain (Sonde)</h4>
+                        <p class="methodology-item__description">
+                            La sonde multi-paramètres permet des mesures en temps réel directement sur le terrain : 
+                            hygrométrie, température, pH, conductivité électrique et nutriments dissous (NPK). 
+                            Ces mesures reflètent la thermodynamique et la chimie immédiate du sol, sans délai d'analyse.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="methodology-item">
+                    <div class="methodology-item__number">3</div>
+                    <div>
+                        <h4 class="methodology-item__title">Analyses Laboratoire (Périodiques)</h4>
+                        <p class="methodology-item__description">
+                            Les indicateurs de structure physique et capital à long terme (matière organique, rapport C/N, 
+                            CEC, ETN) sont analysés en laboratoire accrédité COFRAC selon les normes en vigueur. 
+                            Ces analyses sont réalisées périodiquement (semestrielles ou annuelles) pour suivre l'évolution du sol.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="methodology-item">
+                    <div class="methodology-item__number">4</div>
+                    <div>
+                        <h4 class="methodology-item__title">Calcul du Score de Santé</h4>
+                        <p class="methodology-item__description">
+                            Le score de santé (0-100) combine les données sonde (temps réel) et laboratoire (périodiques).
+                            Pondération : pH (15%), hygrométrie (10%), température (10%), conductivité (5%), NPK (15%),
+                            matière organique (20%), rapport C/N (15%), CEC (10%). Chaque indicateur est évalué par rapport
+                            aux valeurs optimales définies par le référentiel INRAE.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Référentiel Indicateurs -->
+        <section class="section">
+            <h3 class="section__title">📏 Référentiel des Indicateurs</h3>
+            
+            <!-- Indicateurs Sonde -->
+            <h4 style="font-size: 0.9rem; margin-bottom: var(--space-md); display: flex; align-items: center; gap: var(--space-sm);">
+                <span style="background: rgba(74, 222, 128, 0.2); color: #4ade80; padding: 0.25rem 0.75rem; border-radius: var(--radius-full); font-size: 0.7rem; font-weight: 600; text-transform: uppercase;">📡 Sonde</span>
+                Mesures temps réel
+            </h4>
+            <div class="indicators-reference" style="margin-bottom: var(--space-xl);">
+                <div class="indicator-ref" style="border-left: 3px solid #4ade80;">
+                    <div class="indicator-ref__header">
+                        <span class="indicator-ref__icon">💧</span>
+                        <span class="indicator-ref__name">pH du Sol</span>
+                    </div>
+                    <div class="indicator-ref__range">
+                        <div class="indicator-ref__range-title">Plage optimale</div>
+                        <div class="indicator-ref__range-value">6.5 - 7.2</div>
+                    </div>
+                    <p class="indicator-ref__source">Source : INRAE, Guide de fertilité des sols (2022)</p>
+                </div>
+
+                <div class="indicator-ref" style="border-left: 3px solid #4ade80;">
+                    <div class="indicator-ref__header">
+                        <span class="indicator-ref__icon">💦</span>
+                        <span class="indicator-ref__name">Hygrométrie</span>
+                    </div>
+                    <div class="indicator-ref__range">
+                        <div class="indicator-ref__range-title">Plage optimale</div>
+                        <div class="indicator-ref__range-value">35% - 55%</div>
+                    </div>
+                    <p class="indicator-ref__source">Source : ADEME, Gestion de l'eau dans les sols (2023)</p>
+                </div>
+
+                <div class="indicator-ref" style="border-left: 3px solid #4ade80;">
+                    <div class="indicator-ref__header">
+                        <span class="indicator-ref__icon">🌡️</span>
+                        <span class="indicator-ref__name">Température Sol</span>
+                    </div>
+                    <div class="indicator-ref__range">
+                        <div class="indicator-ref__range-title">Plage optimale (printemps)</div>
+                        <div class="indicator-ref__range-value">15°C - 22°C</div>
+                    </div>
+                    <p class="indicator-ref__source">Source : FAO, Soil Temperature Guidelines (2021)</p>
+                </div>
+
+                <div class="indicator-ref" style="border-left: 3px solid #4ade80;">
+                    <div class="indicator-ref__header">
+                        <span class="indicator-ref__icon">⚡</span>
+                        <span class="indicator-ref__name">Conductivité</span>
+                    </div>
+                    <div class="indicator-ref__range">
+                        <div class="indicator-ref__range-title">Plage optimale</div>
+                        <div class="indicator-ref__range-value">0.5 - 1.5 dS/m</div>
+                    </div>
+                    <p class="indicator-ref__source">Source : ISO 11265, Norme technique (2018)</p>
+                </div>
+
+                <div class="indicator-ref" style="border-left: 3px solid #4ade80;">
+                    <div class="indicator-ref__header">
+                        <span class="indicator-ref__icon">🌿</span>
+                        <span class="indicator-ref__name">Nutriments NPK</span>
+                    </div>
+                    <div class="indicator-ref__range">
+                        <div class="indicator-ref__range-title">Azote / Phosphore / Potassium</div>
+                        <div class="indicator-ref__range-value">N, P, K dissous</div>
+                    </div>
+                    <p class="indicator-ref__source">Source : INRAE, Nutrition des plantes (2023)</p>
+                </div>
+            </div>
+            
+            <!-- Indicateurs Laboratoire -->
+            <h4 style="font-size: 0.9rem; margin-bottom: var(--space-md); display: flex; align-items: center; gap: var(--space-sm);">
+                <span style="background: rgba(139, 92, 246, 0.2); color: #a78bfa; padding: 0.25rem 0.75rem; border-radius: var(--radius-full); font-size: 0.7rem; font-weight: 600; text-transform: uppercase;">🔬 Laboratoire</span>
+                Analyses périodiques
+            </h4>
+            <div class="indicators-reference">
+                <div class="indicator-ref" style="border-left: 3px solid #a78bfa;">
+                    <div class="indicator-ref__header">
+                        <span class="indicator-ref__icon">🍂</span>
+                        <span class="indicator-ref__name">Matière Organique</span>
+                    </div>
+                    <div class="indicator-ref__range">
+                        <div class="indicator-ref__range-title">Plage optimale</div>
+                        <div class="indicator-ref__range-value">3.5% - 6.0%</div>
+                    </div>
+                    <p class="indicator-ref__source">Source : GIS Sol, RMQS France (2024)</p>
+                </div>
+
+                <div class="indicator-ref" style="border-left: 3px solid #a78bfa;">
+                    <div class="indicator-ref__header">
+                        <span class="indicator-ref__icon">⚖️</span>
+                        <span class="indicator-ref__name">Rapport C/N</span>
+                    </div>
+                    <div class="indicator-ref__range">
+                        <div class="indicator-ref__range-title">Plage optimale</div>
+                        <div class="indicator-ref__range-value">10 : 1 - 12 : 1</div>
+                    </div>
+                    <p class="indicator-ref__source">Source : INRAE, Dynamique du carbone (2022)</p>
+                </div>
+
+                <div class="indicator-ref" style="border-left: 3px solid #a78bfa;">
+                    <div class="indicator-ref__header">
+                        <span class="indicator-ref__icon">🧪</span>
+                        <span class="indicator-ref__name">CEC</span>
+                    </div>
+                    <div class="indicator-ref__range">
+                        <div class="indicator-ref__range-title">Plage optimale</div>
+                        <div class="indicator-ref__range-value">15 - 25 meq/100g</div>
+                    </div>
+                    <p class="indicator-ref__source">Source : ESDAC, European Soil Database (2023)</p>
+                </div>
+
+                <div class="indicator-ref" style="border-left: 3px solid #a78bfa;">
+                    <div class="indicator-ref__header">
+                        <span class="indicator-ref__icon">🔬</span>
+                        <span class="indicator-ref__name">ETN (Éléments Traces)</span>
+                    </div>
+                    <div class="indicator-ref__range">
+                        <div class="indicator-ref__range-title">Plage optimale</div>
+                        <div class="indicator-ref__range-value">Selon élément</div>
+                    </div>
+                    <p class="indicator-ref__source">Source : BRGM, Référentiel géochimique (2023)</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer style="text-align: center; padding: var(--space-xl) 0; color: var(--text-muted); font-size: 0.8rem;">
+            <p>OTSV Dashboard - Pôle Investigation : Garant de la qualité des informations</p>
+            <p style="margin-top: var(--space-sm);">Dernière mise à jour des sources : Avril 2026</p>
+        </footer>
+    </main>
+</body>
+
+</html>
