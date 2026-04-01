@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OTSV - Mon Capteur</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #0f0f0f;
+            --bg-secondary: #1a1a1a;
+            --bg-card: #222222;
+            --accent: #4ade80;
+            --accent-dim: rgba(74, 222, 128, 0.1);
+            --text-primary: #ffffff;
+            --text-secondary: #a1a1a1;
+            --text-muted: #6b6b6b;
+            --border: #333333;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --success: #22c55e;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* ========== Loading Screens ========== */
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg-primary);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+
+        .loading-screen.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .loading-icon {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        /* Pairing animation */
+        .pairing-animation {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 2rem;
+        }
+
+        .device-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--bg-card);
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .connection-dots {
+            display: flex;
+            gap: 8px;
+        }
+
+        .connection-dots span {
+            width: 8px;
+            height: 8px;
+            background: var(--accent);
+            border-radius: 50%;
+            animation: pulse-dot 1.5s ease-in-out infinite;
+        }
+
+        .connection-dots span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .connection-dots span:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes pulse-dot {
+
+            0%,
+            100% {
+                opacity: 0.3;
+                transform: scale(0.8);
+            }
+
+            50% {
+                opacity: 1;
+                transform: scale(1.2);
+            }
+        }
+
+        /* Analyze animation */
+        .analyze-animation {
+            width: 80px;
+            height: 80px;
+            border: 3px solid var(--border);
+            border-top-color: var(--accent);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .loading-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .loading-subtitle {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .progress-bar {
+            width: 200px;
+            height: 4px;
+            background: var(--bg-card);
+            border-radius: 2px;
+            margin-top: 2rem;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--accent);
+            border-radius: 2px;
+            transition: width 0.3s ease;
+        }
+
+        /* ========== Dashboard ========== */
+        .dashboard {
+            width: 100%;
+            max-width: 900px;
+            padding: 2rem;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        .dashboard.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .dashboard-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .dashboard-header h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .dashboard-header h1 span {
+            color: var(--accent);
+        }
+
+        .sensor-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--accent-dim);
+            color: var(--accent);
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .sensor-badge::before {
+            content: "";
+            width: 8px;
+            height: 8px;
+            background: var(--accent);
+            border-radius: 50%;
+            animation: blink 2s infinite;
+        }
+
+        @keyframes blink {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.3;
+            }
+        }
+
+        .location-info {
+            margin-top: 1rem;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        /* Score Card */
+        .score-card {
+            background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-secondary) 100%);
+            border-radius: 1.5rem;
+            padding: 2rem;
+            text-align: center;
+            margin-bottom: 1.5rem;
+            border: 1px solid var(--border);
+        }
+
+        .score-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .score-value {
+            font-size: 4rem;
+            font-weight: 700;
+            color: var(--accent);
+            line-height: 1;
+        }
+
+        .score-value span {
+            font-size: 1.5rem;
+            color: var(--text-secondary);
+        }
+
+        .score-status {
+            margin-top: 1rem;
+            font-size: 0.875rem;
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        /* Metrics Grid */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .metric-card {
+            background: var(--bg-card);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            border: 1px solid var(--border);
+        }
+
+        .metric-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .metric-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+        }
+
+        .metric-status {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        .status-good {
+            background: var(--success);
+        }
+
+        .status-warning {
+            background: var(--warning);
+        }
+
+        .status-danger {
+            background: var(--danger);
+        }
+
+        .metric-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+            margin-bottom: 0.25rem;
+        }
+
+        .metric-value {
+            font-size: 1.75rem;
+            font-weight: 700;
+        }
+
+        .metric-unit {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            font-weight: 400;
+        }
+
+        .metric-range {
+            margin-top: 0.75rem;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+        }
+
+        /* NPK Card */
+        .npk-card {
+            background: var(--bg-card);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            border: 1px solid var(--border);
+            margin-bottom: 1.5rem;
+        }
+
+        .npk-title {
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .npk-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+        }
+
+        .npk-item {
+            text-align: center;
+        }
+
+        .npk-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .npk-label {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            margin-top: 0.25rem;
+        }
+
+        .npk-bar {
+            height: 4px;
+            background: var(--bg-secondary);
+            border-radius: 2px;
+            margin-top: 0.5rem;
+            overflow: hidden;
+        }
+
+        .npk-fill {
+            height: 100%;
+            border-radius: 2px;
+        }
+
+        /* Last Update */
+        .last-update {
+            text-align: center;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .refresh-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            padding: 0.75rem 1.5rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 0.5rem;
+            color: var(--text-primary);
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .refresh-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        @media (max-width: 600px) {
+            .metrics-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .npk-grid {
+                grid-template-columns: 1fr;
+                gap: 0.75rem;
+            }
+
+            .pairing-animation {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .connection-dots {
+                transform: rotate(90deg);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Loading Screen 1: Pairing -->
+    <div class="loading-screen" id="pairing-screen">
+        <div class="pairing-animation">
+            <div class="device-icon">📱</div>
+            <div class="connection-dots">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <div class="device-icon">📡</div>
+        </div>
+        <h2 class="loading-title" style="margin-top: 2rem;">Appairage en cours...</h2>
+        <p class="loading-subtitle">Connexion au capteur OTSV-2847</p>
+        <div class="progress-bar">
+            <div class="progress-fill" id="pairing-progress" style="width: 0%;"></div>
+        </div>
+    </div>
+
+    <!-- Loading Screen 2: Analyzing -->
+    <div class="loading-screen hidden" id="analyze-screen">
+        <div class="analyze-animation"></div>
+        <h2 class="loading-title" style="margin-top: 2rem;">Analyse des données...</h2>
+        <p class="loading-subtitle">Traitement des mesures du capteur</p>
+        <div class="progress-bar">
+            <div class="progress-fill" id="analyze-progress" style="width: 0%;"></div>
+        </div>
+    </div>
+
+    <!-- Dashboard -->
+    <main class="dashboard" id="dashboard">
+        <header class="dashboard-header">
+            <h1>🌱 <span>OTSV</span> Mon Capteur</h1>
+            <div class="sensor-badge">Capteur OTSV-2847 connecté</div>
+            <p class="location-info">📍 Jardin - 12 Rue des Lilas, Évry-Courcouronnes</p>
+        </header>
+
+        <!-- Score Card -->
+        <div class="score-card">
+            <div class="score-label">Score Santé du Sol</div>
+            <div class="score-value">87<span>/100</span></div>
+            <div class="score-status">✓ Bon état général</div>
+        </div>
+
+        <!-- Metrics Grid -->
+        <div class="metrics-grid">
+            <div class="metric-card">
+                <div class="metric-header">
+                    <div class="metric-icon" style="background: rgba(59, 130, 246, 0.2);">💧</div>
+                    <div class="metric-status status-good"></div>
+                </div>
+                <div class="metric-label">pH du Sol</div>
+                <div class="metric-value">6.8</div>
+                <div class="metric-range">Optimal : 6.5 - 7.2</div>
+            </div>
+
+            <div class="metric-card">
+                <div class="metric-header">
+                    <div class="metric-icon" style="background: rgba(74, 222, 128, 0.2);">💦</div>
+                    <div class="metric-status status-good"></div>
+                </div>
+                <div class="metric-label">Hygrométrie</div>
+                <div class="metric-value">42 <span class="metric-unit">%</span></div>
+                <div class="metric-range">Optimal : 35% - 55%</div>
+            </div>
+
+            <div class="metric-card">
+                <div class="metric-header">
+                    <div class="metric-icon" style="background: rgba(239, 68, 68, 0.2);">🌡️</div>
+                    <div class="metric-status status-good"></div>
+                </div>
+                <div class="metric-label">Température Sol</div>
+                <div class="metric-value">18.5 <span class="metric-unit">°C</span></div>
+                <div class="metric-range">Optimal : 15°C - 22°C</div>
+            </div>
+
+            <div class="metric-card">
+                <div class="metric-header">
+                    <div class="metric-icon" style="background: rgba(99, 102, 241, 0.2);">⚡</div>
+                    <div class="metric-status status-warning"></div>
+                </div>
+                <div class="metric-label">Conductivité</div>
+                <div class="metric-value">1.4 <span class="metric-unit">dS/m</span></div>
+                <div class="metric-range">Optimal : 0.5 - 1.5 dS/m</div>
+            </div>
+        </div>
+
+        <!-- NPK Card -->
+        <div class="npk-card">
+            <div class="npk-title">🌿 Nutriments (NPK)</div>
+            <div class="npk-grid">
+                <div class="npk-item">
+                    <div class="npk-value" style="color: #22c55e;">2450</div>
+                    <div class="npk-label">Azote (N) mg/kg</div>
+                    <div class="npk-bar">
+                        <div class="npk-fill" style="width: 82%; background: #22c55e;"></div>
+                    </div>
+                </div>
+                <div class="npk-item">
+                    <div class="npk-value" style="color: #3b82f6;">185</div>
+                    <div class="npk-label">Phosphore (P) mg/kg</div>
+                    <div class="npk-bar">
+                        <div class="npk-fill" style="width: 65%; background: #3b82f6;"></div>
+                    </div>
+                </div>
+                <div class="npk-item">
+                    <div class="npk-value" style="color: #f59e0b;">320</div>
+                    <div class="npk-label">Potassium (K) mg/kg</div>
+                    <div class="npk-bar">
+                        <div class="npk-fill" style="width: 78%; background: #f59e0b;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Last Update -->
+        <div class="last-update">
+            Dernière mesure : il y a 2 minutes
+            <br>
+            <button class="refresh-btn" onclick="refreshData()">
+                🔄 Actualiser les données
+            </button>
+        </div>
+    </main>
+
+    <script>
+        // Simulate pairing process (5 seconds)
+        const pairingScreen = document.getElementById('pairing-screen');
+        const pairingProgress = document.getElementById('pairing-progress');
+        const analyzeScreen = document.getElementById('analyze-screen');
+        const analyzeProgress = document.getElementById('analyze-progress');
+        const dashboard = document.getElementById('dashboard');
+
+        let pairingPercent = 0;
+        const pairingInterval = setInterval(() => {
+            pairingPercent += 2;
+            pairingProgress.style.width = pairingPercent + '%';
+
+            if (pairingPercent >= 100) {
+                clearInterval(pairingInterval);
+
+                // Transition to analyze screen
+                setTimeout(() => {
+                    pairingScreen.classList.add('hidden');
+                    analyzeScreen.classList.remove('hidden');
+
+                    // Start analyze progress (3 seconds)
+                    let analyzePercent = 0;
+                    const analyzeInterval = setInterval(() => {
+                        analyzePercent += 3.33;
+                        analyzeProgress.style.width = Math.min(analyzePercent, 100) + '%';
+
+                        if (analyzePercent >= 100) {
+                            clearInterval(analyzeInterval);
+
+                            // Show dashboard
+                            setTimeout(() => {
+                                analyzeScreen.classList.add('hidden');
+                                dashboard.classList.add('visible');
+                            }, 300);
+                        }
+                    }, 100);
+                }, 300);
+            }
+        }, 100);
+
+        // Refresh data function
+        function refreshData() {
+            // Simulate data refresh with random variations
+            const metrics = document.querySelectorAll('.metric-value');
+
+            // pH
+            const newPh = (6.5 + Math.random() * 0.7).toFixed(1);
+            metrics[0].textContent = newPh;
+
+            // Humidity
+            const newHumidity = Math.round(35 + Math.random() * 20);
+            metrics[1].innerHTML = newHumidity + ' <span class="metric-unit">%</span>';
+
+            // Temperature
+            const newTemp = (15 + Math.random() * 7).toFixed(1);
+            metrics[2].innerHTML = newTemp + ' <span class="metric-unit">°C</span>';
+
+            // Conductivity
+            const newCond = (0.8 + Math.random() * 0.8).toFixed(1);
+            metrics[3].innerHTML = newCond + ' <span class="metric-unit">dS/m</span>';
+
+            // Update timestamp
+            document.querySelector('.last-update').innerHTML =
+                'Dernière mesure : à l\'instant<br><button class="refresh-btn" onclick="refreshData()">🔄 Actualiser les données</button>';
+        }
+    </script>
+</body>
+
+</html>
