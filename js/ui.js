@@ -34,10 +34,10 @@ const UIModule = {
         const probeIndicators = Object.keys(INDICATORS_CONFIG).filter(k => INDICATORS_CONFIG[k].source === 'probe');
 
         let html = '';
-        
+
         // Probe indicators section
         html += '<div class="indicators-section"><div class="indicators-section__header"><span class="indicators-section__badge indicators-section__badge--probe">📡 Sonde - Temps réel</span></div><div class="indicators-section__grid">';
-        
+
         probeIndicators.forEach(key => {
             const config = INDICATORS_CONFIG[key];
             const value = indicators[key];
@@ -64,7 +64,7 @@ const UIModule = {
                 </div>
             `;
         });
-        
+
         html += '</div></div>';
 
         container.innerHTML = html;
@@ -75,7 +75,7 @@ const UIModule = {
      */
     renderStats() {
         const stats = Utils.calculateGlobalStats(ZONES_DATA);
-        
+
         document.getElementById('stat-score').textContent = `${stats.avgScore}%`;
         document.getElementById('stat-zones').textContent = stats.totalZones;
         document.getElementById('stat-samples').textContent = stats.totalZones * 4; // Mock samples
@@ -87,12 +87,12 @@ const UIModule = {
      */
     renderZonesList(filter = 'all') {
         const container = document.getElementById('zones-list');
-        
+
         let zones = [...ZONES_DATA];
         if (filter !== 'all') {
             zones = zones.filter(z => z.type === filter);
         }
-        
+
         // Sort by score descending
         zones.sort((a, b) => b.score - a.score);
 
@@ -195,7 +195,7 @@ const UIModule = {
      */
     renderLegend() {
         const container = document.getElementById('map-legend-items');
-        
+
         let html = '';
         const scoreRanges = [
             { label: '90+', color: '#4ade80' },
@@ -247,7 +247,7 @@ const UIModule = {
      */
     setActiveFilter(filter) {
         this.activeFilter = filter;
-        
+
         // Update button states
         document.querySelectorAll('.filter-btn').forEach(btn => {
             btn.classList.toggle('active', btn.dataset.filter === filter);
@@ -265,7 +265,7 @@ const UIModule = {
      */
     selectZone(zone) {
         this.selectedZone = zone;
-        
+
         // Update zones list
         document.querySelectorAll('.zone-item').forEach(item => {
             item.classList.toggle('active', item.dataset.zoneId === zone.id);
@@ -292,12 +292,12 @@ const UIModule = {
                 const config = INDICATORS_CONFIG[key];
                 const value = zone.indicators[key];
                 const statusClass = Utils.getStatusClass(value, config.optimal);
-                
+
                 card.querySelector('.indicator__value').innerHTML = `
                     ${Utils.formatNumber(value, key === 'etn' ? 2 : 1)}
                     <span class="indicator__unit">${config.unit}</span>
                 `;
-                
+
                 const statusEl = card.querySelector('.indicator__status');
                 statusEl.className = `indicator__status ${statusClass}`;
             }
@@ -312,7 +312,7 @@ const UIModule = {
         this.renderIndicators();
         this.renderNutrients();
         MapModule.resetView();
-        
+
         document.querySelectorAll('.zone-item').forEach(item => {
             item.classList.remove('active');
         });

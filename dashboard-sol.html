@@ -1,24 +1,30 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OTSV - Dashboard Qualité des Sols</title>
-    
+
     <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    
+
     <!-- Custom Styles -->
     <link rel="stylesheet" href="css/styles.css" />
 </head>
+
 <body>
     <!-- Header -->
     <header class="header">
         <h1 class="header__title">🌱 <span>OTSV</span> Dashboard</h1>
         <div class="header__controls">
             <nav style="display: flex; gap: 0.5rem;">
-                <a href="dashboard-sol.html" class="nav-link active" style="background: var(--bg-card); padding: 0.5rem 1rem; border-radius: 0.5rem; color: var(--text-secondary); text-decoration: none; font-size: 0.875rem; border: 1px solid var(--border);">📊 Dashboard</a>
-                <a href="sources.html" class="nav-link" style="background: var(--bg-card); padding: 0.5rem 1rem; border-radius: 0.5rem; color: var(--text-secondary); text-decoration: none; font-size: 0.875rem; border: 1px solid var(--border);">📚 Sources</a>
+                <a href="dashboard-sol.html" class="nav-link active"
+                    style="background: var(--bg-card); padding: 0.5rem 1rem; border-radius: 0.5rem; color: var(--text-secondary); text-decoration: none; font-size: 0.875rem; border: 1px solid var(--border);">📊
+                    Dashboard</a>
+                <a href="sources.html" class="nav-link"
+                    style="background: var(--bg-card); padding: 0.5rem 1rem; border-radius: 0.5rem; color: var(--text-secondary); text-decoration: none; font-size: 0.875rem; border: 1px solid var(--border);">📚
+                    Sources</a>
             </nav>
             <div class="filter-group">
                 <button class="filter-btn active" data-filter="all">Tous</button>
@@ -115,4 +121,5 @@
     <script src="js/ui.js"></script>
     <script src="js/app.js"></script>
 </body>
+
 </html>

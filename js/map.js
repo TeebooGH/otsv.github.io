@@ -26,7 +26,7 @@ const MapModule = {
             position: 'bottomleft',
             prefix: false
         }).addAttribution('© <a href="https://www.openstreetmap.org/copyright">OSM</a> © <a href="https://carto.com/">CARTO</a>')
-          .addTo(this.map);
+            .addTo(this.map);
 
         // Dark map tiles
         L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
@@ -78,7 +78,7 @@ const MapModule = {
                 box-shadow: 0 2px 8px rgba(0,0,0,0.4);
             "></div>`,
             iconSize: [size, size],
-            iconAnchor: [size/2, size/2]
+            iconAnchor: [size / 2, size / 2]
         });
     },
 
@@ -88,7 +88,7 @@ const MapModule = {
     createPopupContent(zone, zoneType) {
         const scoreClass = Utils.getScoreClass(zone.score);
         const scoreColor = Utils.getScoreColor(zone.score);
-        
+
         return `
             <div class="popup-content">
                 <div class="popup-content__title">
@@ -166,16 +166,16 @@ const MapModule = {
     focusZone(coords, zoom = 17) {
         // Ensure map is ready before setting view
         if (!this.map) return this;
-        
+
         // Convert to Leaflet LatLng if needed
         const latLng = Array.isArray(coords) ? L.latLng(coords[0], coords[1]) : coords;
-        
+
         // Use flyTo for smoother, more reliable centering
         this.map.flyTo(latLng, zoom, {
             animate: true,
             duration: 0.8
         });
-        
+
         return this;
     },
 

@@ -9,7 +9,7 @@ const App = {
      */
     init() {
         console.log('🌱 SoilWatch Dashboard initializing...');
-        
+
         // Initialize map
         MapModule.init('map');
         MapModule.addZones(ZONES_DATA, ZONE_TYPES, (zone) => {
@@ -37,7 +37,7 @@ const App = {
             if (e.key === 'Escape') {
                 UIModule.resetToGlobal();
             }
-            
+
             // R to reset map view
             if (e.key === 'r' || e.key === 'R') {
                 MapModule.resetView();
@@ -74,10 +74,10 @@ const App = {
             // Random small variations
             zone.indicators.humidity += (Math.random() - 0.5) * 2;
             zone.indicators.humidity = Math.max(20, Math.min(60, zone.indicators.humidity));
-            
+
             zone.indicators.temperature += (Math.random() - 0.5) * 0.5;
             zone.indicators.temperature = Math.max(15, Math.min(25, zone.indicators.temperature));
-            
+
             zone.lastUpdate = new Date().toISOString();
         });
 

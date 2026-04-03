@@ -403,6 +403,96 @@
             border-radius: 2px;
         }
 
+        /* Conseils Card */
+        .conseils-card {
+            background: var(--bg-card);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            border: 1px solid var(--border);
+            margin-bottom: 1.5rem;
+        }
+
+        .conseils-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .conseils-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .conseil-item {
+            display: flex;
+            gap: 1rem;
+            padding: 1rem;
+            background: var(--bg-secondary);
+            border-radius: 0.75rem;
+            border-left: 3px solid var(--accent);
+        }
+
+        .conseil-item--warning {
+            border-left-color: var(--warning);
+        }
+
+        .conseil-item--danger {
+            border-left-color: var(--danger);
+        }
+
+        .conseil-icon {
+            font-size: 1.25rem;
+            flex-shrink: 0;
+        }
+
+        .conseil-content {
+            flex: 1;
+        }
+
+        .conseil-title {
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .conseil-description {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .conseil-tag {
+            display: inline-block;
+            margin-top: 0.5rem;
+            padding: 0.2rem 0.5rem;
+            background: var(--accent-dim);
+            color: var(--accent);
+            border-radius: 0.25rem;
+            font-size: 0.65rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .conseil-tag--warning {
+            background: rgba(245, 158, 11, 0.15);
+            color: var(--warning);
+        }
+
+        .all-good {
+            text-align: center;
+            padding: 1.5rem;
+            color: var(--accent);
+        }
+
+        .all-good-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
         /* Last Update */
         .last-update {
             text-align: center;
@@ -567,6 +657,14 @@
             </div>
         </div>
 
+        <!-- Conseils Card -->
+        <div class="conseils-card" id="conseils-card">
+            <div class="conseils-title">💡 Conseils personnalisés</div>
+            <div class="conseils-list" id="conseils-list">
+                <!-- Dynamically populated -->
+            </div>
+        </div>
+
         <!-- Last Update -->
         <div class="last-update">
             Dernière mesure : il y a 2 minutes
@@ -578,6 +676,286 @@
     </main>
 
     <script>
+        // Generate conseils based on metrics (strict thresholds for more frequent advice)
+        function generateConseils(ph, humidity, temp, conductivity, npk) {
+            const conseils = [];
+
+            // pH conseils - plage optimale très stricte : 6.8 - 7.0
+            if (ph < 6.5) {
+                conseils.push({
+                    icon: '🧪',
+                    title: 'Sol trop acide',
+                    description: 'Ajoutez de la chaux ou de la cendre de bois pour remonter le pH. Évitez les engrais acidifiants comme le sulfate d\'ammonium.',
+                    tag: 'Urgent',
+                    level: 'danger'
+                });
+            } else if (ph < 6.8) {
+                conseils.push({
+                    icon: '🧪',
+                    title: 'pH légèrement acide',
+                    description: 'Un léger apport de chaux dolomitique ou de coquilles d\'œufs broyées peut optimiser le pH pour une meilleure absorption des nutriments.',
+                    tag: 'Optimisation',
+                    level: 'normal'
+                });
+            } else if (ph > 7.2) {
+                conseils.push({
+                    icon: '🧪',
+                    title: 'Sol trop alcalin',
+                    description: 'Incorporez du soufre élémentaire ou du compost acide. Le paillage d\'aiguilles de pin peut aussi aider.',
+                    tag: 'Important',
+                    level: 'warning'
+                });
+            } else if (ph > 7.0) {
+                conseils.push({
+                    icon: '🧪',
+                    title: 'pH légèrement élevé',
+                    description: 'Ajoutez du compost ou du marc de café pour légèrement acidifier le sol. Favorise l\'absorption du fer et du manganèse.',
+                    tag: 'Optimisation',
+                    level: 'normal'
+                });
+            }
+
+            // Humidity conseils - plage optimale stricte : 40% - 50%
+            if (humidity < 30) {
+                conseils.push({
+                    icon: '💧',
+                    title: 'Sol très sec',
+                    description: 'Arrosez immédiatement en profondeur. Le stress hydrique peut endommager les racines de façon irréversible.',
+                    tag: 'Urgent',
+                    level: 'danger'
+                });
+            } else if (humidity < 40) {
+                conseils.push({
+                    icon: '💧',
+                    title: 'Humidité insuffisante',
+                    description: 'Arrosez en profondeur et ajoutez un paillis organique (5-10cm) pour conserver l\'humidité. Privilégiez l\'arrosage tôt le matin.',
+                    tag: 'Action requise',
+                    level: 'warning'
+                });
+            } else if (humidity > 55) {
+                conseils.push({
+                    icon: '💧',
+                    title: 'Excès d\'humidité',
+                    description: 'Améliorez le drainage en ajoutant du sable ou du gravier. Réduisez la fréquence d\'arrosage et aérez le sol.',
+                    tag: 'Important',
+                    level: 'warning'
+                });
+            } else if (humidity > 50) {
+                conseils.push({
+                    icon: '💧',
+                    title: 'Humidité élevée',
+                    description: 'Surveillez l\'apparition de maladies fongiques. Espacez les arrosages et favorisez l\'aération du sol.',
+                    tag: 'Vigilance',
+                    level: 'normal'
+                });
+            }
+
+            // Temperature conseils - plage optimale stricte : 17°C - 20°C
+            if (temp < 12) {
+                conseils.push({
+                    icon: '🌡️',
+                    title: 'Sol trop froid',
+                    description: 'Activité biologique très ralentie. Utilisez un paillis foncé et un voile de forçage. Reportez les plantations sensibles.',
+                    tag: 'Urgent',
+                    level: 'danger'
+                });
+            } else if (temp < 17) {
+                conseils.push({
+                    icon: '🌡️',
+                    title: 'Température fraîche',
+                    description: 'La minéralisation de l\'azote est ralentie. Utilisez un paillis foncé pour absorber la chaleur ou attendez pour les semis.',
+                    tag: 'Conseil',
+                    level: 'normal'
+                });
+            } else if (temp > 25) {
+                conseils.push({
+                    icon: '🌡️',
+                    title: 'Sol trop chaud',
+                    description: 'Stress thermique pour les racines. Appliquez un paillis clair épais et arrosez copieusement en fin de journée.',
+                    tag: 'Important',
+                    level: 'warning'
+                });
+            } else if (temp > 20) {
+                conseils.push({
+                    icon: '🌡️',
+                    title: 'Température élevée',
+                    description: 'Appliquez un paillis clair pour réfléchir la chaleur. Évitez le binage en pleine chaleur pour préserver l\'humidité.',
+                    tag: 'Conseil',
+                    level: 'normal'
+                });
+            }
+
+            // Conductivity conseils - plage optimale stricte : 0.8 - 1.2 dS/m
+            if (conductivity > 1.8) {
+                conseils.push({
+                    icon: '⚡',
+                    title: 'Salinité très élevée',
+                    description: 'Risque de brûlure des racines. Effectuez un lessivage urgent avec un arrosage très abondant.',
+                    tag: 'Urgent',
+                    level: 'danger'
+                });
+            } else if (conductivity > 1.2) {
+                conseils.push({
+                    icon: '⚡',
+                    title: 'Salinité élevée',
+                    description: 'Effectuez un lessivage avec un arrosage abondant. Réduisez l\'apport d\'engrais chimiques et privilégiez le compost.',
+                    tag: 'Important',
+                    level: 'warning'
+                });
+            } else if (conductivity < 0.5) {
+                conseils.push({
+                    icon: '⚡',
+                    title: 'Sol peu fertile',
+                    description: 'Le sol manque de nutriments solubles. Apportez un engrais équilibré ou du compost mûr pour enrichir le sol.',
+                    tag: 'Action requise',
+                    level: 'warning'
+                });
+            } else if (conductivity < 0.8) {
+                conseils.push({
+                    icon: '⚡',
+                    title: 'Fertilité modérée',
+                    description: 'Un apport léger de compost ou d\'engrais organique peut améliorer la disponibilité des nutriments.',
+                    tag: 'Optimisation',
+                    level: 'normal'
+                });
+            }
+
+            // NPK conseils - seuils plus exigeants
+            if (npk.n < 1800) {
+                conseils.push({
+                    icon: '🌿',
+                    title: 'Carence en azote (N)',
+                    description: 'Apportez du fumier composté, des engrais verts (trèfle, luzerne) ou du purin d\'ortie pour stimuler la croissance végétale.',
+                    tag: 'Nutriment',
+                    level: 'danger'
+                });
+            } else if (npk.n < 2400) {
+                conseils.push({
+                    icon: '🌿',
+                    title: 'Azote (N) à surveiller',
+                    description: 'Le taux d\'azote est correct mais peut être optimisé. Un engrais vert ou du compost bien mûr maintiendra un bon niveau.',
+                    tag: 'Optimisation',
+                    level: 'normal'
+                });
+            } else if (npk.n > 3000) {
+                conseils.push({
+                    icon: '🌿',
+                    title: 'Excès d\'azote (N)',
+                    description: 'Risque de croissance foliaire excessive au détriment des fruits. Réduisez les apports azotés et favorisez le potassium.',
+                    tag: 'Vigilance',
+                    level: 'warning'
+                });
+            }
+
+            if (npk.p < 120) {
+                conseils.push({
+                    icon: '🌸',
+                    title: 'Carence en phosphore (P)',
+                    description: 'Incorporez de la poudre d\'os, du guano ou du compost de crevettes. Le phosphore favorise l\'enracinement et la floraison.',
+                    tag: 'Nutriment',
+                    level: 'danger'
+                });
+            } else if (npk.p < 180) {
+                conseils.push({
+                    icon: '🌸',
+                    title: 'Phosphore (P) à surveiller',
+                    description: 'Le phosphore est assimilable mais pas optimal. Un apport de compost ou de corne broyée améliorera la floraison.',
+                    tag: 'Optimisation',
+                    level: 'normal'
+                });
+            }
+
+            if (npk.k < 200) {
+                conseils.push({
+                    icon: '🍎',
+                    title: 'Carence en potassium (K)',
+                    description: 'Utilisez de la cendre de bois, des peaux de banane compostées ou un engrais potassique naturel pour améliorer la résistance des plantes.',
+                    tag: 'Nutriment',
+                    level: 'danger'
+                });
+            } else if (npk.k < 300) {
+                conseils.push({
+                    icon: '🍎',
+                    title: 'Potassium (K) à surveiller',
+                    description: 'Le potassium peut être renforcé avec de la cendre de bois ou du compost riche. Améliore la qualité des fruits et la résistance aux maladies.',
+                    tag: 'Optimisation',
+                    level: 'normal'
+                });
+            }
+
+            // Conseils généraux basés sur combinaisons
+            if (humidity < 40 && temp > 20) {
+                conseils.push({
+                    icon: '☀️',
+                    title: 'Stress hydrique imminent',
+                    description: 'Combinaison chaleur/sécheresse défavorable. Paillez généreusement et arrosez en soirée pour limiter l\'évaporation.',
+                    tag: 'Alerte',
+                    level: 'warning'
+                });
+            }
+
+            if (ph < 6.8 && npk.p < 180) {
+                conseils.push({
+                    icon: '🔬',
+                    title: 'Phosphore bloqué',
+                    description: 'En sol acide, le phosphore est moins disponible. Corrigez d\'abord le pH pour améliorer l\'assimilation du phosphore.',
+                    tag: 'Expert',
+                    level: 'warning'
+                });
+            }
+
+            if (conductivity > 1.2 && humidity < 45) {
+                conseils.push({
+                    icon: '⚠️',
+                    title: 'Concentration saline',
+                    description: 'Le manque d\'eau concentre les sels. Arrosez abondamment pour diluer et lessiver les excès de minéraux.',
+                    tag: 'Alerte',
+                    level: 'warning'
+                });
+            }
+
+            return conseils;
+        }
+
+        function renderConseils() {
+            // Get current values from the page
+            const metrics = document.querySelectorAll('.metric-value');
+            const ph = parseFloat(metrics[0].textContent);
+            const humidity = parseInt(metrics[1].textContent);
+            const temp = parseFloat(metrics[2].textContent);
+            const conductivity = parseFloat(metrics[3].textContent);
+
+            const npkValues = document.querySelectorAll('.npk-value');
+            const npk = {
+                n: parseInt(npkValues[0].textContent),
+                p: parseInt(npkValues[1].textContent),
+                k: parseInt(npkValues[2].textContent)
+            };
+
+            const conseils = generateConseils(ph, humidity, temp, conductivity, npk);
+            const conseilsList = document.getElementById('conseils-list');
+
+            if (conseils.length === 0) {
+                conseilsList.innerHTML = `
+                    <div class="all-good">
+                        <div class="all-good-icon">✨</div>
+                        <div>Excellent ! Tous vos indicateurs sont dans les plages optimales.</div>
+                    </div>
+                `;
+            } else {
+                conseilsList.innerHTML = conseils.map(c => `
+                    <div class="conseil-item${c.level === 'warning' ? ' conseil-item--warning' : c.level === 'danger' ? ' conseil-item--danger' : ''}">
+                        <div class="conseil-icon">${c.icon}</div>
+                        <div class="conseil-content">
+                            <div class="conseil-title">${c.title}</div>
+                            <div class="conseil-description">${c.description}</div>
+                            <span class="conseil-tag${c.level === 'warning' ? ' conseil-tag--warning' : ''}">${c.tag}</span>
+                        </div>
+                    </div>
+                `).join('');
+            }
+        }
+
         // Simulate pairing process (5 seconds)
         const pairingScreen = document.getElementById('pairing-screen');
         const pairingProgress = document.getElementById('pairing-progress');
@@ -611,6 +989,7 @@
                             setTimeout(() => {
                                 analyzeScreen.classList.add('hidden');
                                 dashboard.classList.add('visible');
+                                renderConseils();
                             }, 300);
                         }
                     }, 100);
@@ -638,6 +1017,24 @@
             // Conductivity
             const newCond = (0.8 + Math.random() * 0.8).toFixed(1);
             metrics[3].innerHTML = newCond + ' <span class="metric-unit">dS/m</span>';
+
+            // NPK values (with some variation)
+            const npkValues = document.querySelectorAll('.npk-value');
+            const newN = Math.round(2000 + Math.random() * 1000);
+            const newP = Math.round(130 + Math.random() * 100);
+            const newK = Math.round(250 + Math.random() * 150);
+            npkValues[0].textContent = newN;
+            npkValues[1].textContent = newP;
+            npkValues[2].textContent = newK;
+
+            // Update NPK bars
+            const npkFills = document.querySelectorAll('.npk-fill');
+            npkFills[0].style.width = Math.min(newN / 3000 * 100, 100) + '%';
+            npkFills[1].style.width = Math.min(newP / 250 * 100, 100) + '%';
+            npkFills[2].style.width = Math.min(newK / 400 * 100, 100) + '%';
+
+            // Update conseils
+            renderConseils();
 
             // Update timestamp
             document.querySelector('.last-update').innerHTML =

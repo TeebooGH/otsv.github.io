@@ -16,36 +16,36 @@
     --bg-secondary: #1a1a1a;
     --bg-card: #222222;
     --bg-hover: #2a2a2a;
-    
+
     --accent: #4ade80;
     --accent-secondary: #22c55e;
     --accent-dim: rgba(74, 222, 128, 0.1);
-    
+
     --text-primary: #ffffff;
     --text-secondary: #a1a1a1;
     --text-muted: #6b6b6b;
-    
+
     --border: #333333;
     --border-light: #404040;
-    
+
     --danger: #ef4444;
     --warning: #f59e0b;
     --info: #3b82f6;
     --success: #22c55e;
-    
+
     /* Spacing */
     --space-xs: 0.25rem;
     --space-sm: 0.5rem;
     --space-md: 1rem;
     --space-lg: 1.5rem;
     --space-xl: 2rem;
-    
+
     /* Radius */
     --radius-sm: 0.5rem;
     --radius-md: 0.75rem;
     --radius-lg: 1rem;
     --radius-full: 9999px;
-    
+
     /* Transitions */
     --transition-fast: 0.15s ease;
     --transition-normal: 0.2s ease;
@@ -366,13 +366,28 @@ body {
 }
 
 @keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.5; }
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
 }
 
-.status--good { background: var(--success); }
-.status--warning { background: var(--warning); }
-.status--danger { background: var(--danger); }
+.status--good {
+    background: var(--success);
+}
+
+.status--warning {
+    background: var(--warning);
+}
+
+.status--danger {
+    background: var(--danger);
+}
 
 .indicator__label {
     font-size: 0.7rem;
@@ -402,9 +417,17 @@ body {
     gap: var(--space-xs);
 }
 
-.trend--up { color: var(--success); }
-.trend--down { color: var(--danger); }
-.trend--stable { color: var(--text-secondary); }
+.trend--up {
+    color: var(--success);
+}
+
+.trend--down {
+    color: var(--danger);
+}
+
+.trend--stable {
+    color: var(--text-secondary);
+}
 
 /* Mini chart in indicator */
 .indicator__chart {
@@ -540,10 +563,21 @@ body {
     font-weight: 700;
 }
 
-.score--excellent { color: var(--accent); }
-.score--good { color: #84cc16; }
-.score--moderate { color: var(--warning); }
-.score--poor { color: var(--danger); }
+.score--excellent {
+    color: var(--accent);
+}
+
+.score--good {
+    color: #84cc16;
+}
+
+.score--moderate {
+    color: var(--warning);
+}
+
+.score--poor {
+    color: var(--danger);
+}
 
 /* ========== Nutrient Bars ========== */
 .nutrient-bars {
@@ -747,17 +781,17 @@ body {
         height: auto;
         overflow: visible;
     }
-    
+
     .indicators-grid {
         grid-template-columns: repeat(4, 1fr);
     }
-    
+
     .right-panel {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
         gap: var(--space-lg);
     }
-    
+
     .last-update {
         grid-column: 1 / -1;
     }
@@ -767,7 +801,7 @@ body {
     .indicators-grid {
         grid-template-columns: repeat(2, 1fr);
     }
-    
+
     .right-panel {
         grid-template-columns: 1fr 1fr;
     }
@@ -779,24 +813,24 @@ body {
         gap: var(--space-md);
         padding: var(--space-md);
     }
-    
+
     .header__controls {
         flex-wrap: wrap;
         justify-content: center;
     }
-    
+
     .dashboard {
         padding: var(--space-md);
     }
-    
+
     .indicators-grid {
         grid-template-columns: 1fr;
     }
-    
+
     .right-panel {
         grid-template-columns: 1fr;
     }
-    
+
     .stats-grid {
         grid-template-columns: repeat(4, 1fr);
     }

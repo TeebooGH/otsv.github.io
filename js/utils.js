@@ -123,7 +123,7 @@ const Utils = {
     calculateGlobalStats(zones) {
         const scores = zones.map(z => z.score);
         const avgScore = Math.round(this.average(scores));
-        
+
         const allNutrients = zones.reduce((acc, z) => {
             Object.keys(z.nutrients).forEach(key => {
                 if (!acc[key]) acc[key] = [];
@@ -131,7 +131,7 @@ const Utils = {
             });
             return acc;
         }, {});
-        
+
         const avgNutrients = {};
         Object.keys(allNutrients).forEach(key => {
             avgNutrients[key] = Math.round(this.average(allNutrients[key]));
@@ -144,7 +144,7 @@ const Utils = {
             });
             return acc;
         }, {});
-        
+
         const avgIndicators = {};
         Object.keys(allIndicators).forEach(key => {
             avgIndicators[key] = this.average(allIndicators[key]);
