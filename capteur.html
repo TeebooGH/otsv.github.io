@@ -351,58 +351,6 @@
             color: var(--text-muted);
         }
 
-        /* NPK Card */
-        .npk-card {
-            background: var(--bg-card);
-            border-radius: 1rem;
-            padding: 1.5rem;
-            border: 1px solid var(--border);
-            margin-bottom: 1.5rem;
-        }
-
-        .npk-title {
-            font-size: 0.8rem;
-            font-weight: 600;
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .npk-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1rem;
-        }
-
-        .npk-item {
-            text-align: center;
-        }
-
-        .npk-value {
-            font-size: 1.5rem;
-            font-weight: 700;
-        }
-
-        .npk-label {
-            font-size: 0.7rem;
-            color: var(--text-secondary);
-            margin-top: 0.25rem;
-        }
-
-        .npk-bar {
-            height: 4px;
-            background: var(--bg-secondary);
-            border-radius: 2px;
-            margin-top: 0.5rem;
-            overflow: hidden;
-        }
-
-        .npk-fill {
-            height: 100%;
-            border-radius: 2px;
-        }
-
         /* Conseils Card */
         .conseils-card {
             background: var(--bg-card);
@@ -629,34 +577,6 @@
             </div>
         </div>
 
-        <!-- NPK Card -->
-        <div class="npk-card">
-            <div class="npk-title">🌿 Nutriments (NPK)</div>
-            <div class="npk-grid">
-                <div class="npk-item">
-                    <div class="npk-value" style="color: #22c55e;">2450</div>
-                    <div class="npk-label">Azote (N) mg/kg</div>
-                    <div class="npk-bar">
-                        <div class="npk-fill" style="width: 82%; background: #22c55e;"></div>
-                    </div>
-                </div>
-                <div class="npk-item">
-                    <div class="npk-value" style="color: #3b82f6;">185</div>
-                    <div class="npk-label">Phosphore (P) mg/kg</div>
-                    <div class="npk-bar">
-                        <div class="npk-fill" style="width: 65%; background: #3b82f6;"></div>
-                    </div>
-                </div>
-                <div class="npk-item">
-                    <div class="npk-value" style="color: #f59e0b;">320</div>
-                    <div class="npk-label">Potassium (K) mg/kg</div>
-                    <div class="npk-bar">
-                        <div class="npk-fill" style="width: 78%; background: #f59e0b;"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
         <!-- Conseils Card -->
         <div class="conseils-card" id="conseils-card">
             <div class="conseils-title">💡 Conseils personnalisés</div>
@@ -677,7 +597,7 @@
 
     <script>
         // Generate conseils based on metrics (strict thresholds for more frequent advice)
-        function generateConseils(ph, humidity, temp, conductivity, npk) {
+        function generateConseils(ph, humidity, temp, conductivity) {
             const conseils = [];
 
             // pH conseils - plage optimale très stricte : 6.8 - 7.0
@@ -820,69 +740,6 @@
                 });
             }
 
-            // NPK conseils - seuils plus exigeants
-            if (npk.n < 1800) {
-                conseils.push({
-                    icon: '🌿',
-                    title: 'Carence en azote (N)',
-                    description: 'Apportez du fumier composté, des engrais verts (trèfle, luzerne) ou du purin d\'ortie pour stimuler la croissance végétale.',
-                    tag: 'Nutriment',
-                    level: 'danger'
-                });
-            } else if (npk.n < 2400) {
-                conseils.push({
-                    icon: '🌿',
-                    title: 'Azote (N) à surveiller',
-                    description: 'Le taux d\'azote est correct mais peut être optimisé. Un engrais vert ou du compost bien mûr maintiendra un bon niveau.',
-                    tag: 'Optimisation',
-                    level: 'normal'
-                });
-            } else if (npk.n > 3000) {
-                conseils.push({
-                    icon: '🌿',
-                    title: 'Excès d\'azote (N)',
-                    description: 'Risque de croissance foliaire excessive au détriment des fruits. Réduisez les apports azotés et favorisez le potassium.',
-                    tag: 'Vigilance',
-                    level: 'warning'
-                });
-            }
-
-            if (npk.p < 120) {
-                conseils.push({
-                    icon: '🌸',
-                    title: 'Carence en phosphore (P)',
-                    description: 'Incorporez de la poudre d\'os, du guano ou du compost de crevettes. Le phosphore favorise l\'enracinement et la floraison.',
-                    tag: 'Nutriment',
-                    level: 'danger'
-                });
-            } else if (npk.p < 180) {
-                conseils.push({
-                    icon: '🌸',
-                    title: 'Phosphore (P) à surveiller',
-                    description: 'Le phosphore est assimilable mais pas optimal. Un apport de compost ou de corne broyée améliorera la floraison.',
-                    tag: 'Optimisation',
-                    level: 'normal'
-                });
-            }
-
-            if (npk.k < 200) {
-                conseils.push({
-                    icon: '🍎',
-                    title: 'Carence en potassium (K)',
-                    description: 'Utilisez de la cendre de bois, des peaux de banane compostées ou un engrais potassique naturel pour améliorer la résistance des plantes.',
-                    tag: 'Nutriment',
-                    level: 'danger'
-                });
-            } else if (npk.k < 300) {
-                conseils.push({
-                    icon: '🍎',
-                    title: 'Potassium (K) à surveiller',
-                    description: 'Le potassium peut être renforcé avec de la cendre de bois ou du compost riche. Améliore la qualité des fruits et la résistance aux maladies.',
-                    tag: 'Optimisation',
-                    level: 'normal'
-                });
-            }
-
             // Conseils généraux basés sur combinaisons
             if (humidity < 40 && temp > 20) {
                 conseils.push({
@@ -894,22 +751,22 @@
                 });
             }
 
-            if (ph < 6.8 && npk.p < 180) {
-                conseils.push({
-                    icon: '🔬',
-                    title: 'Phosphore bloqué',
-                    description: 'En sol acide, le phosphore est moins disponible. Corrigez d\'abord le pH pour améliorer l\'assimilation du phosphore.',
-                    tag: 'Expert',
-                    level: 'warning'
-                });
-            }
-
             if (conductivity > 1.2 && humidity < 45) {
                 conseils.push({
                     icon: '⚠️',
                     title: 'Concentration saline',
                     description: 'Le manque d\'eau concentre les sels. Arrosez abondamment pour diluer et lessiver les excès de minéraux.',
                     tag: 'Alerte',
+                    level: 'warning'
+                });
+            }
+
+            if (ph < 6.8 && conductivity < 0.8) {
+                conseils.push({
+                    icon: '🔬',
+                    title: 'Sol appauvri',
+                    description: 'Le sol acide et peu fertile nécessite un amendement complet : chaulage + compost mûr pour restaurer l\'équilibre.',
+                    tag: 'Expert',
                     level: 'warning'
                 });
             }
@@ -925,14 +782,7 @@
             const temp = parseFloat(metrics[2].textContent);
             const conductivity = parseFloat(metrics[3].textContent);
 
-            const npkValues = document.querySelectorAll('.npk-value');
-            const npk = {
-                n: parseInt(npkValues[0].textContent),
-                p: parseInt(npkValues[1].textContent),
-                k: parseInt(npkValues[2].textContent)
-            };
-
-            const conseils = generateConseils(ph, humidity, temp, conductivity, npk);
+            const conseils = generateConseils(ph, humidity, temp, conductivity);
             const conseilsList = document.getElementById('conseils-list');
 
             if (conseils.length === 0) {
@@ -1017,21 +867,6 @@
             // Conductivity
             const newCond = (0.8 + Math.random() * 0.8).toFixed(1);
             metrics[3].innerHTML = newCond + ' <span class="metric-unit">dS/m</span>';
-
-            // NPK values (with some variation)
-            const npkValues = document.querySelectorAll('.npk-value');
-            const newN = Math.round(2000 + Math.random() * 1000);
-            const newP = Math.round(130 + Math.random() * 100);
-            const newK = Math.round(250 + Math.random() * 150);
-            npkValues[0].textContent = newN;
-            npkValues[1].textContent = newP;
-            npkValues[2].textContent = newK;
-
-            // Update NPK bars
-            const npkFills = document.querySelectorAll('.npk-fill');
-            npkFills[0].style.width = Math.min(newN / 3000 * 100, 100) + '%';
-            npkFills[1].style.width = Math.min(newP / 250 * 100, 100) + '%';
-            npkFills[2].style.width = Math.min(newK / 400 * 100, 100) + '%';
 
             // Update conseils
             renderConseils();
