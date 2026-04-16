@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OTSV - Qualité des sols à Évry-Courcouronnes</title>
+    <link rel="stylesheet" href="css/styles.css" />
+    <style>
+        body {
+            overflow-x: hidden;
+        }
+
+        .landing {
+            min-height: 100vh;
+            position: relative;
+            background:
+                radial-gradient(circle at top left, rgba(74, 222, 128, 0.16), transparent 28%),
+                radial-gradient(circle at top right, rgba(59, 130, 246, 0.14), transparent 24%),
+                linear-gradient(180deg, #0f0f0f 0%, #101010 45%, #0c0c0c 100%);
+            color: var(--text-primary);
+        }
+
+        .landing::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            background-image: linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 48px 48px;
+            mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.35), transparent 85%);
+            opacity: 0.35;
+        }
+
+        .landing__wrap {
+            position: relative;
+            z-index: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1.25rem 1.25rem 3rem;
+        }
+
+        .topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            padding: 0.9rem 1.1rem;
+            background: rgba(26, 26, 26, 0.78);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 1rem;
+            position: sticky;
+            top: 1rem;
+            z-index: 20;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            min-width: 0;
+        }
+
+        .brand__mark {
+            width: 2.7rem;
+            height: 2.7rem;
+            border-radius: 0.9rem;
+            background: linear-gradient(135deg, rgba(74, 222, 128, 0.95), rgba(34, 197, 94, 0.65));
+            display: grid;
+            place-items: center;
+            color: #08130b;
+            font-weight: 800;
+            box-shadow: 0 16px 48px rgba(74, 222, 128, 0.18);
+        }
+
+        .brand__text {
+            display: flex;
+            flex-direction: column;
+            gap: 0.15rem;
+            min-width: 0;
+        }
+
+        .brand__title {
+            font-size: 1rem;
+            font-weight: 700;
+            letter-spacing: 0.02em;
+        }
+
+        .brand__subtitle {
+            font-size: 0.78rem;
+            color: var(--text-secondary);
+        }
+
+        .topnav {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 0.6rem;
+        }
+
+        .topnav a {
+            text-decoration: none;
+            color: var(--text-secondary);
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 9999px;
+            padding: 0.7rem 1rem;
+            font-size: 0.85rem;
+            transition: all 0.2s ease;
+        }
+
+        .topnav a:hover {
+            color: var(--accent);
+            border-color: var(--accent);
+            transform: translateY(-1px);
+        }
+
+        .hero {
+            display: grid;
+            grid-template-columns: 1.2fr 0.95fr;
+            gap: 1.5rem;
+            align-items: center;
+            padding: 4.5rem 0 2.5rem;
+        }
+
+        .hero__eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.45rem 0.8rem;
+            border-radius: 9999px;
+            background: rgba(74, 222, 128, 0.1);
+            color: var(--accent);
+            border: 1px solid rgba(74, 222, 128, 0.22);
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 1rem;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.4rem, 6vw, 4.9rem);
+            line-height: 0.95;
+            letter-spacing: -0.04em;
+            margin-bottom: 1rem;
+            max-width: 11ch;
+        }
+
+        .hero h1 span {
+            color: var(--accent);
+        }
+
+        .hero__lead {
+            font-size: 1.05rem;
+            line-height: 1.7;
+            color: var(--text-secondary);
+            max-width: 56ch;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero__actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.55rem;
+            padding: 0.95rem 1.2rem;
+            border-radius: 9999px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+        }
+
+        .btn--primary {
+            background: linear-gradient(135deg, var(--accent), #86efac);
+            color: #08130b;
+            box-shadow: 0 20px 50px rgba(74, 222, 128, 0.22);
+        }
+
+        .btn--primary:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn--ghost {
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+            background: rgba(34, 34, 34, 0.8);
+        }
+
+        .btn--ghost:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .hero__meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+        }
+
+        .meta-pill {
+            padding: 0.55rem 0.8rem;
+            border-radius: 9999px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            font-size: 0.82rem;
+        }
+
+        .hero__visual {
+            position: relative;
+            padding: 1rem;
+        }
+
+        .glass-card {
+            background: linear-gradient(180deg, rgba(34, 34, 34, 0.92), rgba(26, 26, 26, 0.92));
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 1.4rem;
+            box-shadow: 0 24px 80px rgba(0, 0, 0, 0.35);
+            overflow: hidden;
+        }
+
+        .preview {
+            padding: 1.1rem;
+        }
+
+        .preview__top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .preview__label {
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        .preview__score {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--accent);
+        }
+
+        .preview__map {
+            height: 220px;
+            border-radius: 1rem;
+            border: 1px solid var(--border);
+            background:
+                radial-gradient(circle at 20% 30%, rgba(74, 222, 128, 0.28), transparent 22%),
+                radial-gradient(circle at 76% 34%, rgba(59, 130, 246, 0.18), transparent 20%),
+                linear-gradient(135deg, #132114 0%, #111111 55%, #171717 100%);
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 1rem;
+        }
+
+        .preview__map::before,
+        .preview__map::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+            background-size: 32px 32px;
+        }
+
+        .preview__pin {
+            position: absolute;
+            left: 58%;
+            top: 44%;
+            transform: translate(-50%, -50%);
+            width: 1rem;
+            height: 1rem;
+            border-radius: 50%;
+            background: var(--accent);
+            box-shadow: 0 0 0 12px rgba(74, 222, 128, 0.12), 0 0 28px rgba(74, 222, 128, 0.5);
+        }
+
+        .preview__pin::after {
+            content: "";
+            position: absolute;
+            inset: -0.45rem;
+            border: 1px solid rgba(74, 222, 128, 0.45);
+            border-radius: 50%;
+        }
+
+        .preview__badge {
+            position: absolute;
+            left: 1rem;
+            bottom: 1rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+            background: rgba(15, 15, 15, 0.82);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 9999px;
+            padding: 0.55rem 0.8rem;
+            font-size: 0.76rem;
+            color: var(--text-secondary);
+        }
+
+        .preview__stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.75rem;
+        }
+
+        .mini-stat {
+            padding: 0.9rem;
+            border-radius: 1rem;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border);
+        }
+
+        .mini-stat__value {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 0.2rem;
+        }
+
+        .mini-stat__label {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        .section {
+            padding: 1.4rem 0 0;
+        }
+
+        .section__header {
+            display: flex;
+            justify-content: space-between;
+            align-items: end;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .section__title {
+            font-size: 1.15rem;
+            font-weight: 700;
+        }
+
+        .section__subtitle {
+            color: var(--text-secondary);
+            font-size: 0.92rem;
+            max-width: 62ch;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+        }
+
+        .card {
+            background: rgba(34, 34, 34, 0.92);
+            border: 1px solid var(--border);
+            border-radius: 1.2rem;
+            padding: 1.2rem;
+        }
+
+        .card__icon {
+            width: 2.6rem;
+            height: 2.6rem;
+            border-radius: 0.9rem;
+            display: grid;
+            place-items: center;
+            background: rgba(74, 222, 128, 0.1);
+            border: 1px solid rgba(74, 222, 128, 0.18);
+            margin-bottom: 0.9rem;
+            font-size: 1.1rem;
+        }
+
+        .card__title {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .card__text {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.65;
+        }
+
+        .flow {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+        }
+
+        .flow__step {
+            position: relative;
+            padding: 1.15rem;
+            border-radius: 1rem;
+            background: linear-gradient(180deg, rgba(34, 34, 34, 0.95), rgba(26, 26, 26, 0.95));
+            border: 1px solid var(--border);
+        }
+
+        .flow__step-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 2rem;
+            height: 2rem;
+            border-radius: 50%;
+            background: var(--accent-dim);
+            color: var(--accent);
+            font-weight: 800;
+            margin-bottom: 0.9rem;
+        }
+
+        .flow__step-title {
+            font-weight: 700;
+            margin-bottom: 0.35rem;
+        }
+
+        .flow__step-text {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        .cta-band {
+            margin-top: 1.5rem;
+            padding: 1.2rem;
+            border-radius: 1.2rem;
+            background: linear-gradient(135deg, rgba(74, 222, 128, 0.12), rgba(34, 197, 94, 0.06));
+            border: 1px solid rgba(74, 222, 128, 0.18);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+
+        .cta-band strong {
+            display: block;
+            margin-bottom: 0.25rem;
+        }
+
+        .cta-band p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 900px) {
+            .hero,
+            .grid-3,
+            .flow {
+                grid-template-columns: 1fr;
+            }
+
+            .topbar,
+            .section__header,
+            .cta-band {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <main class="landing">
+        <div class="landing__wrap">
+            <header class="topbar">
+                <div class="brand">
+                    <div class="brand__mark">OT</div>
+                    <div class="brand__text">
+                        <div class="brand__title">OTSV</div>
+                        <div class="brand__subtitle">Suivi intelligent de la qualité des sols à Évry-Courcouronnes</div>
+                    </div>
+                </div>
+                <nav class="topnav">
+                    <a href="index.html">Accueil</a>
+                    <a href="dashboard-sol.html">Dashboard</a>
+                    <a href="capteur.html">Capteur</a>
+                    <a href="sources.html">Sources</a>
+                </nav>
+            </header>
+
+            <section class="hero">
+                <div>
+                    <div class="hero__eyebrow">Projet terrain • mock data • Évry-Courcouronnes</div>
+                    <h1>Comprendre le sol, <span>agir vite</span>, suivre mieux.</h1>
+                    <p class="hero__lead">
+                        OTSV est une interface de pilotage minimaliste et lisible pour visualiser l’état des sols,
+                        comparer les zones de mesure, simuler un capteur et documenter les sources d’analyse.
+                    </p>
+                    <div class="hero__actions">
+                        <a class="btn btn--primary" href="dashboard-sol.html">📊 Ouvrir le dashboard</a>
+                        <a class="btn btn--ghost" href="capteur.html">📡 Lancer le capteur</a>
+                        <a class="btn btn--ghost" href="sources.html">📚 Voir les sources</a>
+                    </div>
+                    <div class="hero__meta">
+                        <div class="meta-pill">35 zones simulées</div>
+                        <div class="meta-pill">Mesures en temps réel</div>
+                        <div class="meta-pill">Centré sur Évry-Courcouronnes</div>
+                    </div>
+                </div>
+
+                <div class="hero__visual">
+                    <div class="glass-card preview">
+                        <div class="preview__top">
+                            <div>
+                                <div class="preview__label">Score santé global</div>
+                                <div class="preview__score">87/100</div>
+                            </div>
+                            <div class="meta-pill">OTSV-2847</div>
+                        </div>
+
+                        <div class="preview__map">
+                            <div class="preview__pin"></div>
+                            <div class="preview__badge">📍 Évry-Courcouronnes • vue synthétique</div>
+                        </div>
+
+                        <div class="preview__stats">
+                            <div class="mini-stat">
+                                <div class="mini-stat__value" style="color: var(--accent);">42</div>
+                                <div class="mini-stat__label">zones monitorées</div>
+                            </div>
+                            <div class="mini-stat">
+                                <div class="mini-stat__value" style="color: #60a5fa;">4</div>
+                                <div class="mini-stat__label">métriques sonde</div>
+                            </div>
+                            <div class="mini-stat">
+                                <div class="mini-stat__value" style="color: #f59e0b;">3</div>
+                                <div class="mini-stat__label">pages métier</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <div class="section__header">
+                    <div>
+                        <div class="section__title">Une expérience claire, rapide et utile</div>
+                        <div class="section__subtitle">
+                            Chaque écran a un rôle précis : observer les zones, suivre un capteur unique, ou
+                            vérifier la fiabilité des informations.
+                        </div>
+                    </div>
+                </div>
+                <div class="grid-3">
+                    <article class="card">
+                        <div class="card__icon">🗺️</div>
+                        <div class="card__title">Cartographier</div>
+                        <div class="card__text">
+                            Repérer rapidement les zones à fort enjeu grâce à une carte sobre, des points lisibles et
+                            des statistiques globales.
+                        </div>
+                    </article>
+                    <article class="card">
+                        <div class="card__icon">📈</div>
+                        <div class="card__title">Interpréter</div>
+                        <div class="card__text">
+                            Lire en un coup d’œil les valeurs clés du sol : pH, hygrométrie, chaleur et conductivité,
+                            avec des conseils actionnables.
+                        </div>
+                    </article>
+                    <article class="card">
+                        <div class="card__icon">🔎</div>
+                        <div class="card__title">Fiabiliser</div>
+                        <div class="card__text">
+                            Appuyer les informations avec une page Sources dédiée, pensée pour un rôle d’investigation
+                            et de validation méthodologique.
+                        </div>
+                    </article>
+                </div>
+            </section>
+
+            <section class="section">
+                <div class="section__header">
+                    <div>
+                        <div class="section__title">Parcours projet</div>
+                        <div class="section__subtitle">
+                            Trois entrées pour passer d’une vue d’ensemble à une lecture concrète du terrain.
+                        </div>
+                    </div>
+                </div>
+                <div class="flow">
+                    <div class="flow__step">
+                        <div class="flow__step-number">1</div>
+                        <div class="flow__step-title">Explorer la carte</div>
+                        <div class="flow__step-text">
+                            Visualiser les zones d’Évry-Courcouronnes, leurs scores santé et leur répartition par
+                            type de milieu.
+                        </div>
+                    </div>
+                    <div class="flow__step">
+                        <div class="flow__step-number">2</div>
+                        <div class="flow__step-title">Simuler un capteur</div>
+                        <div class="flow__step-text">
+                            Suivre un enchaînement d’appairage puis d’analyse avant d’obtenir un tableau de bord
+                            individuel plus concret.
+                        </div>
+                    </div>
+                    <div class="flow__step">
+                        <div class="flow__step-number">3</div>
+                        <div class="flow__step-title">Sourcer les données</div>
+                        <div class="flow__step-text">
+                            Consulter les références officielles et la méthodologie pour expliquer la provenance des
+                            indicateurs affichés.
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <div class="cta-band">
+                <div>
+                    <strong>OTSV, pensé pour décider vite sans sacrifier la clarté.</strong>
+                    <p>Une landing page simple d’accès, qui oriente vers l’analyse, la simulation et la validation.</p>
+                </div>
+                <a class="btn btn--primary" href="dashboard-sol.html">Commencer maintenant →</a>
+            </div>
+        </div>
+    </main>
+</body>
+
+</html>
